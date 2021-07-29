@@ -438,8 +438,10 @@ static FlutterError *getFlutterError(NSError *error) {
                 notification.repeatInterval = NSCalendarUnitWeekOfYear;
                 break;
             case Monthly:
+                NSLog(@"monthly interval called");
                 timeInterval = self.returnMonthlyRepeatInterval;
                 notification.repeatInterval = NSCalendarUnitMonth;
+                break;
                 
         }
         notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:timeInterval];
