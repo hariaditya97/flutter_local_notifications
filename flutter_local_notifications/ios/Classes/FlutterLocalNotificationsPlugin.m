@@ -426,7 +426,7 @@ static FlutterError *getFlutterError(NSError *error) {
                 notification.repeatInterval = NSCalendarUnitMinute;
                 break;
             case Hourly:
-                timeInterval = 60 * 60;
+                timeInterval = self.returnMonthlyRepeatInterval;
                 notification.repeatInterval = NSCalendarUnitHour;
                 break;
             case Daily:
