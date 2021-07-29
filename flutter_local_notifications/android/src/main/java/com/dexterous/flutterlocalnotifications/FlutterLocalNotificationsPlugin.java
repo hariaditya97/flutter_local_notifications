@@ -448,42 +448,80 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
         LocalDate date = LocalDate.now();
         long repeatInterval;
         System.out.println(date.getMonth());
+        int dayOfMonth = date.getDayOfMonth():
+        bool isLeapYear = date.isLeapYear();
 
         switch(date.getMonth()) {
 
             case JANUARY:
                 System.out.println("It is January!");
                 repeatInterval = 60000 * 60 * 24 * 31L;
+                if (dayOfMonth == 29) {
+                    if (!isLeapYear) {
+                      repeatInterval = 60000 * 60 * 24 * 30L; 
+                    }
+                }
+                else if (dayOfMonth == 30) {
+                    if (!isLeapYear) {
+                      repeatInterval = 60000 * 60 * 24 * 29L; 
+                    }
+                    else {
+                      repeatInterval = 60000 * 60 * 24 * 30L; 
+                    }
+                }
+                else if (dayOfMonth == 31) {
+                    if (!isLeapYear) {
+                      repeatInterval = 60000 * 60 * 24 * 28L; 
+                    }
+                    else {
+                      repeatInterval = 60000 * 60 * 24 * 29L; 
+                    }
+                }
                 System.out.println(repeatInterval);
                 break;
 
             case FEBRUARY:
                 System.out.println("It is February!");
                 repeatInterval = 60000 * 60 * 24 * 28L;
+                if (dayOfMonth == 28 || dayOfMonth == 29) {
+                    repeatInterval = 60000 * 60 * 24 * 31L; 
+                }
                 System.out.println(repeatInterval);
                 break;
 
             case MARCH:
                 System.out.println("It is March!");
                 repeatInterval = 60000 * 60 * 24 * 31L;
+                if (dayOfMonth == 31) {
+                    repeatInterval = 60000 * 60 * 24 * 30L; 
+                }
                 System.out.println(repeatInterval);
                 break;
 
             case APRIL:
                 System.out.println("It is April!");
                 repeatInterval = 60000 * 60 * 24 * 30L;
+                 if (dayOfMonth == 30) {
+                    repeatInterval = 60000 * 60 * 24 * 31L; 
+                }
                 System.out.println(repeatInterval);
                 break;
 
             case MAY:
                 System.out.println("It is May!");
                 repeatInterval = 60000 * 60 * 24 * 31L;
+                 if (dayOfMonth == 31) {
+                    repeatInterval = 60000 * 60 * 24 * 30L; 
+                }
                 System.out.println(repeatInterval);
                 break;
 
             case JUNE:
                 System.out.println("It is June!");
                 repeatInterval = 60000 * 60 * 24 * 30L;
+                 if (dayOfMonth == 30) {
+                    repeatInterval = 60000 * 60 * 24 * 31L; 
+                }
                 System.out.println(repeatInterval);
                 break;
 
@@ -496,24 +534,36 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
             case AUGUST:
                 System.out.println("It is August!");
                 repeatInterval = 60000 * 60 * 24 * 31L;
+                 if (dayOfMonth == 31) {
+                    repeatInterval = 60000 * 60 * 24 * 30L; 
+                }
                 System.out.println(repeatInterval);
                 break;
 
             case SEPTEMBER:
                 System.out.println("It is September!");
                 repeatInterval = 60000 * 60 * 24 * 30L;
+                 if (dayOfMonth == 30) {
+                    repeatInterval = 60000 * 60 * 24 * 31L; 
+                }
                 System.out.println(repeatInterval);
                 break;
 
             case OCTOBER:
                 System.out.println("It is October!");
                 repeatInterval = 60000 * 60 * 24 * 31L;
+                 if (dayOfMonth == 31) {
+                    repeatInterval = 60000 * 60 * 24 * 30L; 
+                }
                 System.out.println(repeatInterval);
                 break;
 
             case NOVEMBER:
                 System.out.println("It is November!");
                 repeatInterval = 60000 * 60 * 24 * 30L;
+                 if (dayOfMonth == 30) {
+                    repeatInterval = 60000 * 60 * 24 * 31L; 
+                }
                 System.out.println(repeatInterval);
                 break;
 
@@ -529,7 +579,6 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
         }
         return repeatInterval;
     }
-    
 
     private static void saveScheduledNotification(Context context, NotificationDetails notificationDetails) {
         ArrayList<NotificationDetails> scheduledNotifications = loadScheduledNotifications(context);
