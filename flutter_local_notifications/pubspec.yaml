@@ -8,7 +8,11 @@ homepage: https://github.com/MaikuB/flutter_local_notifications/tree/master/flut
 dependencies:
   flutter:
     sdk: flutter
-  flutter_local_notifications_platform_interface: ^4.0.1
+#   flutter_local_notifications_platform_interface: ^4.0.1
+  flutter_local_notifications_platform_interface:
+    git:
+      url: https://github.com/hariaditya97/flutter_local_notifications.git
+      path: flutter_local_notifications_platform_interface 
   platform: ^3.0.0
   timezone: ^0.7.0
 
