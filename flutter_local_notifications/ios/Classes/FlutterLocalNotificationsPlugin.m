@@ -437,12 +437,86 @@ static FlutterError *getFlutterError(NSError *error) {
                 timeInterval = 60 * 60 * 24 * 7;
                 notification.repeatInterval = NSCalendarUnitWeekOfYear;
                 break;
+            case Monthly:
+                timeInterval = self.returnMonthlyRepeatInterval;
+                notification.repeatInterval = NSCalendarUnitMonth;
+                
         }
         notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:timeInterval];
         [[UIApplication sharedApplication] scheduleLocalNotification:notification];
         result(nil);
     }
 }
+
+- (NSTimeInterval)returnMonthlyRepeatInterval {
+    NSDate *myDate = [NSDate date];
+     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+     formatter.dateFormat = @"MMMM";
+     NSLog(@"The current month is %@", [formatter stringFromDate:myDate]);
+
+    if ([[formatter stringFromDate:myDate] isEqualToString:@"January"])
+    {
+        return   60 * 60 * 24 * 31;
+    }
+    
+    else if ([[formatter stringFromDate:myDate] isEqualToString:@"February"])
+    {
+        return   60 * 60 * 24 * 28;
+    }
+    
+    else if ([[formatter stringFromDate:myDate] isEqualToString:@"March"])
+    {
+        return   60 * 60 * 24 * 31;
+    }
+    
+    else if ([[formatter stringFromDate:myDate] isEqualToString:@"April"])
+    {
+        return   60 * 60 * 24 * 30;
+    }
+    
+    else if ([[formatter stringFromDate:myDate] isEqualToString:@"May"])
+    {
+        return   60 * 60 * 24 * 31;
+    }
+    
+    else if ([[formatter stringFromDate:myDate] isEqualToString:@"June"])
+    {
+        return   60 * 60 * 24 * 30;
+    }
+    
+    else if ([[formatter stringFromDate:myDate] isEqualToString:@"July"])
+    {
+        return   60 * 60 * 24 * 31;
+    }
+    
+    else if ([[formatter stringFromDate:myDate] isEqualToString:@"August"])
+    {
+        return   60 * 60 * 24 * 31;
+    }
+    
+    else if ([[formatter stringFromDate:myDate] isEqualToString:@"September"])
+    {
+        return   60 * 60 * 24 * 30;
+    }
+    
+    else if ([[formatter stringFromDate:myDate] isEqualToString:@"October"])
+    {
+        return   60 * 60 * 24 * 31;
+    }
+    
+    else if ([[formatter stringFromDate:myDate] isEqualToString:@"November"])
+    {
+        return   60 * 60 * 24 * 30;
+    }
+    
+    else if ([[formatter stringFromDate:myDate] isEqualToString:@"December"])
+    {
+        return   60 * 60 * 24 * 30;
+    }
+    
+    return 60 * 60 * 24 * 30;
+  }
+
 
 - (void)showDailyAtTime:(NSDictionary * _Nonnull)arguments result:(FlutterResult _Nonnull)result {
     NSDictionary *timeArguments = (NSDictionary *) arguments[REPEAT_TIME];
