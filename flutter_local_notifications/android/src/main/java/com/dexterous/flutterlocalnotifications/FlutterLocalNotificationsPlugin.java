@@ -448,7 +448,7 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
         LocalDate date = LocalDate.now();
         long repeatInterval;
         System.out.println(date.getMonth());
-        int dayOfMonth = date.getDayOfMonth():
+        int dayOfMonth = date.getDayOfMonth();
         bool isLeapYear = date.isLeapYear();
 
         switch(date.getMonth()) {
