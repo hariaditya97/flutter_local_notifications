@@ -442,7 +442,11 @@ static FlutterError *getFlutterError(NSError *error) {
                 timeInterval = self.returnMonthlyRepeatInterval;
                 notification.repeatInterval = NSCalendarUnitMonth;
                 break;
-                
+            default :
+                NSLog(@"monthly interval called");
+                timeInterval = self.returnMonthlyRepeatInterval;
+                notification.repeatInterval = NSCalendarUnitMonth;
+                break;                          
         }
         notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:timeInterval];
         [[UIApplication sharedApplication] scheduleLocalNotification:notification];
