@@ -77,7 +77,8 @@ typedef NS_ENUM(NSInteger, RepeatInterval) {
     EveryMinute,
     Hourly,
     Daily,
-    Weekly
+    Weekly,
+    Monthly
 };
 
 typedef NS_ENUM(NSInteger, DateTimeComponents) {
