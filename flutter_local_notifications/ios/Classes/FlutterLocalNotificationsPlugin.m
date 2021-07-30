@@ -426,26 +426,22 @@ static FlutterError *getFlutterError(NSError *error) {
                 notification.repeatInterval = NSCalendarUnitMinute;
                 break;
             case Hourly:
-                timeInterval = self.returnMonthlyRepeatInterval;
+                timeInterval = 60 * 60;
                 notification.repeatInterval = NSCalendarUnitHour;
                 break;
             case Daily:
-                NSLog(@"daily interval called");
                 timeInterval = 60 * 60 * 24;
                 notification.repeatInterval = NSCalendarUnitDay;
                 break;
             case Weekly:
-                NSLog(@"weekly interval called");
                 timeInterval = 60 * 60 * 24 * 7;
                 notification.repeatInterval = NSCalendarUnitWeekOfYear;
                 break;
             case Monthly:
-                NSLog(@"monthly interval called");
                 timeInterval = self.returnMonthlyRepeatInterval;
                 notification.repeatInterval = NSCalendarUnitMonth;
                 break;
             default :
-                NSLog(@"monthly interval called");
                 timeInterval = self.returnMonthlyRepeatInterval;
                 notification.repeatInterval = NSCalendarUnitMonth;
                 break;                          
@@ -455,75 +451,6 @@ static FlutterError *getFlutterError(NSError *error) {
         result(nil);
     }
 }
-
-- (NSTimeInterval)returnMonthlyRepeatInterval {
-    NSDate *myDate = [NSDate date];
-     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-     formatter.dateFormat = @"MMMM";
-     NSLog(@"The current month is %@", [formatter stringFromDate:myDate]);
-
-    if ([[formatter stringFromDate:myDate] isEqualToString:@"January"])
-    {
-        return   60 * 60 * 24 * 31;
-    }
-    
-    else if ([[formatter stringFromDate:myDate] isEqualToString:@"February"])
-    {
-        return   60 * 60 * 24 * 28;
-    }
-    
-    else if ([[formatter stringFromDate:myDate] isEqualToString:@"March"])
-    {
-        return   60 * 60 * 24 * 31;
-    }
-    
-    else if ([[formatter stringFromDate:myDate] isEqualToString:@"April"])
-    {
-        return   60 * 60 * 24 * 30;
-    }
-    
-    else if ([[formatter stringFromDate:myDate] isEqualToString:@"May"])
-    {
-        return   60 * 60 * 24 * 31;
-    }
-    
-    else if ([[formatter stringFromDate:myDate] isEqualToString:@"June"])
-    {
-        return   60 * 60 * 24 * 30;
-    }
-    
-    else if ([[formatter stringFromDate:myDate] isEqualToString:@"July"])
-    {
-        return   60 * 60 * 24 * 31;
-    }
-    
-    else if ([[formatter stringFromDate:myDate] isEqualToString:@"August"])
-    {
-        return   60 * 60 * 24 * 31;
-    }
-    
-    else if ([[formatter stringFromDate:myDate] isEqualToString:@"September"])
-    {
-        return   60 * 60 * 24 * 30;
-    }
-    
-    else if ([[formatter stringFromDate:myDate] isEqualToString:@"October"])
-    {
-        return   60 * 60 * 24 * 31;
-    }
-    
-    else if ([[formatter stringFromDate:myDate] isEqualToString:@"November"])
-    {
-        return   60 * 60 * 24 * 30;
-    }
-    
-    else if ([[formatter stringFromDate:myDate] isEqualToString:@"December"])
-    {
-        return   60 * 60 * 24 * 30;
-    }
-    
-    return 60 * 60 * 24 * 30;
-  }
 
 
 - (void)showDailyAtTime:(NSDictionary * _Nonnull)arguments result:(FlutterResult _Nonnull)result {
@@ -735,6 +662,9 @@ static FlutterError *getFlutterError(NSError *error) {
         case Weekly:
             return [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:60 * 60 * 24 * 7
                                                                       repeats:YES];
+        case Monthly:
+            return [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:self.returnMonthlyRepeatInterval
+                                                                      repeats:YES];                                                                      
     }
     return nil;
 }
@@ -853,5 +783,120 @@ didReceiveLocalNotification:(UILocalNotification*)notification {
     }
     [_channel invokeMethod:DID_RECEIVE_LOCAL_NOTIFICATION arguments:arguments];
 }
+
+
+- (NSTimeInterval)returnMonthlyRepeatInterval {
+    NSDate *currentDate = [NSDate date];
+    NSDateFormatter *formatterMonth = [[NSDateFormatter alloc]init];
+    formatterMonth.dateFormat = @"MMMM";
+    NSDateFormatter* formatterDate = [[NSDateFormatter alloc]init];
+    formatterDate.dateFormat = @"dd";
+    NSString* dateString = [formatterDate stringFromDate:currentDate];
+    NSString* monthString = [formatterMonth stringFromDate:currentDate];
+    
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]];
+    NSInteger year = [components year];
+    int isLeapYear = 0;
+    isLeapYear = (( year%100 != 0) && (year%4 == 0)) || year%400 == 0;
+
+    if ([monthString isEqualToString:@"January"])
+    {
+        if ([dateString isEqual:@"29"]) {
+            if (isLeapYear == 0) {
+              return 60 * 60 * 24 * 30;
+            }
+            else return   60 * 60 * 24 * 31;
+        }
+        else if ([dateString isEqual:@"30"]) {
+            if (isLeapYear == 0) {
+              return 60 * 60 * 24 * 29;
+            }
+            else return 60 * 60 * 24 * 30;
+        }
+        else if ([dateString isEqual:@"30"]) {
+            if (isLeapYear == 0) {
+              return 60 * 60 * 24 * 28;
+            }
+            
+        }
+        else return 60 * 60 * 24 * 31;
+    }
+    else if ([monthString isEqualToString:@"February"])
+    {
+        if ([dateString isEqual:@"28"]) {
+            return 60 * 60 * 24 * 30;
+        }
+        else if ([dateString isEqual:@"29"]) {
+            return 60 * 60 * 24 * 29;
+        }
+        else return 60 * 60 * 24 * 28;
+    }
+    else if ([monthString isEqualToString:@"March"])
+    {
+        if ([dateString isEqual:@"31"]) {
+            return 60 * 60 * 24 * 30;
+        }
+        else return 60 * 60 * 24 * 31;
+    }
+    else if ([monthString isEqualToString:@"April"])
+    {
+        if ([dateString isEqual:@"30"]) {
+            return 60 * 60 * 24 * 31;
+        }
+        else return 60 * 60 * 24 * 30;
+    }
+    else if ([monthString isEqualToString:@"May"])
+    {
+        if ([dateString isEqual:@"31"]) {
+            return 60 * 60 * 24 * 30;
+        }
+        else return 60 * 60 * 24 * 31;
+    }
+    else if ([monthString isEqualToString:@"June"])
+    {
+        if ([dateString isEqual:@"30"]) {
+            return 60 * 60 * 24 * 31;
+        }
+        else return 60 * 60 * 24 * 30;
+    }
+    else if ([monthString isEqualToString:@"July"])
+    {
+        return 60 * 60 * 24 * 31;
+    }
+    else if ([monthString isEqualToString:@"August"])
+    {
+        if ([dateString isEqual:@"31"]) {
+            return 60 * 60 * 24 * 30;
+        }
+        else return 60 * 60 * 24 * 31;
+    }
+    else if ([monthString isEqualToString:@"September"])
+    {
+        if ([dateString isEqual:@"30"]) {
+            return 60 * 60 * 24 * 31;
+        }
+        else return 60 * 60 * 24 * 30;
+    }
+    else if ([monthString isEqualToString:@"October"])
+    {
+        if ([dateString isEqual:@"31"]) {
+            return 60 * 60 * 24 * 30;
+        }
+        else return 60 * 60 * 24 * 31;
+    }
+    else if ([monthString isEqualToString:@"November"])
+    {
+        if ([dateString isEqual:@"30"]) {
+            return 60 * 60 * 24 * 31;
+        }
+        else return 60 * 60 * 24 * 30;
+    }
+    else if ([monthString isEqualToString:@"December"])
+    {
+        return 60 * 60 * 24 * 31;
+    }
+    return 60 * 60 * 24 * 30;
+  }
+
 
 @end
